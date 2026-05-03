@@ -5,9 +5,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --green-900: #0f2b1d;
+  --green-900: #0d2e1c;
   --green-800: #14532d;
-  --green-700: #166534;
+  --green-700: #1a5e37;
   --green-600: #16a34a;
   --green-500: #22c55e;
   --green-100: #dcfce7;
@@ -73,8 +73,8 @@ body {
 .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.05); }
 .nav-links a.active { 
   color: var(--white); 
-  border-bottom-color: var(--green-500);
-  background: rgba(255,255,255,.1);
+  border-bottom: 4px solid var(--green-500);
+  background: rgba(255,255,255,0.1);
 }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -318,7 +318,7 @@ textarea.form-control { resize: vertical; min-height: 60px; }
     scrollbar-width: none;
   }
   .nav-links::-webkit-scrollbar { display: none; }
-  .nav-links a { padding: 12px 15px; white-space: nowrap; border-bottom-width: 2px; }
+  .nav-links a { padding: 12px 15px; white-space: nowrap; border-bottom-width: 4px; }
   .nav-right { display: none; }
 
   .page-container { padding: 16px 12px; }
