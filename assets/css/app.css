@@ -5,11 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --green-900: #0d2e1c;
+  --green-900: #14532d;
   --green-800: #14532d;
-  --green-700: #1a5e37;
-  --green-600: #16a34a;
-  --green-500: #22c55e;
+  --green-700: #14532d;
+  --green-600: #14532d;
+  --green-500: #14532d;
   --green-100: #dcfce7;
   --green-50: #f0fdf4;
   --orange-500: #f59e0b;
@@ -75,11 +75,10 @@ body {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 16px;
-  right: 16px;
+  left: 0;
+  right: 0;
   height: 4px;
-  background: var(--green-500);
-  border-radius: 4px 4px 0 0;
+  background: #22c55e; /* Hijau terang agar terlihat di background gelap */
 }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -143,14 +142,13 @@ body {
 .stat-card .stat-sub { font-size: 11px; color: var(--gray-400); }
 .stat-card .stat-icon {
   position: absolute; top: 18px; right: 18px; width: 40px; height: 40px;
-  border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
 }
-.stat-icon svg, .stat-icon .iconify { width: 32px; height: 32px; }
-.stat-card.blue .stat-icon { background: var(--blue-100); }
-.stat-card.orange .stat-icon { background: var(--orange-100); }
-.stat-card.purple .stat-icon { background: var(--purple-100); }
-.stat-card.green .stat-icon { background: var(--green-100); }
+.stat-icon .iconify { width: 32px; height: 32px; }
+.stat-card.blue .stat-icon { color: var(--blue-500); }
+.stat-card.orange .stat-icon { color: var(--orange-500); }
+.stat-card.purple .stat-icon { color: var(--purple-500); }
+.stat-card.green .stat-icon { color: var(--green-500); }
 
 /* ── Cards ── */
 .card {
