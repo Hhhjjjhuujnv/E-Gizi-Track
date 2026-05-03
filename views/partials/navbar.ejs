@@ -11,7 +11,7 @@ const _page = typeof currentPage !== 'undefined' ? currentPage : '';
         <img src="/assets/images/logo.png" alt="E-GiziTrack">
         <div>
             <span>E-GiziTrack</span>
-            <small>Sistem Pengumpulan Data Gizi</small>
+            <small>Sistem Pengumpulan Data Gizi Ibu Hamil dan Balita</small>
         </div>
     </a>
     <div class="nav-links">
@@ -29,8 +29,8 @@ const _page = typeof currentPage !== 'undefined' ? currentPage : '';
                     <strong><%= _nama %></strong>
                     <small><%= (session.role||'user').charAt(0).toUpperCase() + (session.role||'user').slice(1) %></small>
                 </div>
-                <a href="/pengaturan">⚙️ Pengaturan</a>
-                <a href="/logout" class="dropdown-logout">🚪 Keluar</a>
+                <a href="/pengaturan">Pengaturan</a>
+                <a href="/logout" class="dropdown-logout">Keluar</a>
             </div>
         </div>
     </div>

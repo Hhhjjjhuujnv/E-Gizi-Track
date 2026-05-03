@@ -51,41 +51,41 @@ body {
 
 /* ── Navbar ── */
 .navbar {
-  background: linear-gradient(135deg, var(--green-900), var(--green-800));
+  background: var(--green-900);
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0 40px; height: 64px;
+  padding: 0 24px; height: 60px;
   position: sticky; top: 0; z-index: 1000;
-  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
 }
-.nav-brand { display: flex; align-items: center; gap: 10px; color: var(--white); text-decoration: none; }
-.nav-brand img { width: 32px; height: 32px; border-radius: 6px; }
-.nav-brand span { font-weight: 700; font-size: 15px; letter-spacing: .3px; }
-.nav-brand small { font-size: 10px; opacity: .65; display: block; margin-top: -2px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; color: var(--white); text-decoration: none; min-width: max-content; }
+.nav-brand img { width: 28px; height: 28px; }
+.nav-brand span { font-weight: 700; font-size: 14px; letter-spacing: .2px; }
+.nav-brand small { font-size: 9px; opacity: .7; display: block; margin-top: -1px; white-space: nowrap; }
 
-.nav-links { display: flex; align-items: center; height: 100%; gap: 4px; }
+.nav-links { display: flex; align-items: center; height: 100%; gap: 0; }
 .nav-links a {
   color: rgba(255,255,255,.6); text-decoration: none;
   font-size: 13px; font-weight: 500; padding: 0 16px;
   height: 100%; display: flex; align-items: center;
-  position: relative; transition: color var(--transition);
-  border-radius: var(--radius-sm);
+  position: relative; transition: all var(--transition);
+  border-bottom: 3px solid transparent;
 }
-.nav-links a:hover { color: rgba(255,255,255,.9); }
-.nav-links a.active { color: var(--white); }
-.nav-links a.active::after {
-  content: ''; position: absolute; bottom: 12px; left: 16px; right: 16px;
-  height: 3px; background: var(--green-500); border-radius: 2px;
+.nav-links a:hover { color: var(--white); background: rgba(255,255,255,.05); }
+.nav-links a.active { 
+  color: var(--white); 
+  border-bottom-color: var(--green-500);
+  background: rgba(255,255,255,.1);
 }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
 .btn-nav-add {
-  background: var(--orange-500); color: var(--white);
-  padding: 7px 18px; border-radius: var(--radius-full);
-  text-decoration: none; font-size: 13px; font-weight: 600;
+  background: var(--green-600); color: var(--white);
+  padding: 6px 14px; border-radius: var(--radius-sm);
+  text-decoration: none; font-size: 12px; font-weight: 600;
   transition: all var(--transition); border: none; cursor: pointer;
   display: inline-flex; align-items: center; gap: 6px;
 }
-.btn-nav-add:hover { background: #d97706; transform: translateY(-1px); }
+.btn-nav-add:hover { background: var(--green-500); transform: translateY(-1px); }
 
 .avatar {
   width: 34px; height: 34px; border-radius: var(--radius-full);
@@ -308,15 +308,35 @@ textarea.form-control { resize: vertical; min-height: 60px; }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .navbar { padding: 0 16px; }
-  .nav-links a { padding: 0 10px; font-size: 12px; }
-  .page-container { padding: 20px 16px; }
-  .stat-grid { grid-template-columns: repeat(2, 1fr); }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-group.full { grid-column: span 1; }
-  .table-toolbar { flex-direction: column; align-items: stretch; }
-  .search-input { width: 100%; }
-  .modal { width: 95%; max-width: none; margin: 16px; }
-  .data-table { font-size: 12px; }
+  .navbar { height: auto; flex-direction: column; padding: 0; }
+  .nav-brand { padding: 12px 16px; width: 100%; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .nav-links { 
+    width: 100%; 
+    overflow-x: auto; 
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { padding: 12px 15px; white-space: nowrap; border-bottom-width: 2px; }
+  .nav-right { display: none; }
+
+  .page-container { padding: 16px 12px; }
+  .page-header h1 { font-size: 18px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-card { padding: 12px; }
+  .stat-card .stat-value { font-size: 20px; }
+  .stat-card h4 { font-size: 10px; }
+  .stat-card .stat-icon { width: 32px; height: 32px; font-size: 14px; top: 12px; right: 12px; }
+  
+  .table-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+  .search-input { width: 100%; font-size: 12px; }
+  .filter-group { overflow-x: auto; padding-bottom: 4px; }
+  .filter-btn { white-space: nowrap; padding: 6px 12px; font-size: 11px; }
+
+  .card-body { padding: 16px; }
+  .data-table { font-size: 11px; }
+  .data-table thead th, .data-table tbody td { padding: 10px 8px; }
+  
   .settings-grid { grid-template-columns: 1fr !important; }
 }

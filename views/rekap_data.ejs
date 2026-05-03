@@ -20,7 +20,7 @@
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;">
                     <form method="GET"><% if(filterKat) { %><input type="hidden" name="kat" value="<%= filterKat %>"><% } %><input type="text" name="search" class="search-input" placeholder="Cari nama / No. Responden..." value="<%= search %>"></form>
-                    <a href="/export" class="btn btn-outline btn-sm">📥 Ekspor</a>
+                    <a href="/export" class="btn btn-outline btn-sm">Ekspor</a>
                 </div>
             </div>
             <div style="overflow-x:auto;"><table class="data-table">
@@ -38,7 +38,7 @@
                         <td><span class="tag <%= (row.status_gizi && (row.status_gizi.includes('KEK') || row.status_gizi.includes('Kekurangan'))) ? 'tag-risiko' : 'tag-normal' %>"><%= row.status_gizi||'-' %></span></td>
                         <td style="color:var(--gray-500);font-size:12px;"><%= row.nama_enumerator %></td>
                         <td style="font-size:12px;"><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID') : '-' %></td>
-                        <td style="text-align:right;"><div style="display:flex;gap:4px;justify-content:flex-end;"><a href="/edit/<%= row._id %>" class="btn-icon">✏️</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" onclick="return confirm('Yakin hapus?')">🗑️</a></div></td>
+                        <td style="text-align:right;"><div style="display:flex;gap:4px;justify-content:flex-end;"><a href="/edit/<%= row._id %>" class="btn-icon">Edit</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" onclick="return confirm('Yakin hapus?')">Hapus</a></div></td>
                     </tr>
                     <% }); } else { %>
                     <tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><p>Tidak ada data ditemukan.</p></div></td></tr>
