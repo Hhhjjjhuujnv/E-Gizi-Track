@@ -62,14 +62,14 @@ body {
 .nav-brand span { font-weight: 700; font-size: 14px; letter-spacing: .2px; }
 .nav-brand small { font-size: 9px; opacity: .7; display: block; margin-top: -1px; white-space: nowrap; }
 
-.nav-links { display: flex; align-items: stretch; height: 100%; gap: 0; }
+.nav-links { display: flex; align-items: flex-end; height: 100%; gap: 0; }
 .nav-links a {
   color: rgba(255,255,255,.6); text-decoration: none;
-  font-size: 13px; font-weight: 500; padding: 0 16px;
-  display: flex; align-items: center;
+  font-size: 13px; font-weight: 500;
+  padding: 18px 16px 14px 16px;
+  display: inline-flex; align-items: center;
   transition: all .2s ease;
   border-bottom: 4px solid transparent;
-  margin-bottom: -1px;
 }
 .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.05); }
 .nav-links a.active {
