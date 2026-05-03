@@ -55,7 +55,7 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   padding: 0 24px; height: 60px;
   position: sticky; top: 0; z-index: 1000;
-  box-shadow: none;
+  overflow: visible;
 }
 .nav-brand { display: flex; align-items: center; gap: 10px; color: var(--white); text-decoration: none; min-width: max-content; }
 .nav-brand img { width: 28px; height: 28px; }
@@ -68,17 +68,14 @@ body {
   font-size: 13px; font-weight: 500; padding: 0 16px;
   height: 100%; display: flex; align-items: center;
   position: relative; transition: all var(--transition);
+  border-bottom: 3px solid transparent;
+  box-sizing: border-box;
 }
 .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.05); }
-.nav-links a.active { color: var(--white); background: rgba(255,255,255,.1); }
-.nav-links a.active::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: #22c55e; /* Hijau terang agar terlihat di background gelap */
+.nav-links a.active {
+  color: var(--white);
+  background: rgba(255,255,255,.08);
+  border-bottom: 3px solid #22c55e;
 }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
