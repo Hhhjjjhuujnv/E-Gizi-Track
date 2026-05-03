@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - E-GiziTrack</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+    <% const currentPage = 'dashboard'; %>
+    <%- include('partials/navbar') %>
+
+    <div class="page-container">
+        <div class="page-header">
+            <div class="breadcrumb">Beranda / <span>Dashboard</span></div>
+            <h1>Dashboard Pengumpulan Data</h1>
+            <p id="lastUpdate">Memuat waktu...</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card blue"><h4>Total Ibu Hamil</h4><div class="stat-value"><%= totalHamil %></div><div class="stat-sub">Responden terdaftar</div><div class="stat-icon">🤰</div></div>
+            <div class="stat-card orange"><h4>Total Balita</h4><div class="stat-value"><%= totalBalita %></div><div class="stat-sub">Responden terdaftar</div><div class="stat-icon">👶</div></div>
+            <div class="stat-card purple"><h4>Wilayah Tercakup</h4><div class="stat-value"><%= totalWilayah %></div><div class="stat-sub">Kecamatan aktif</div><div class="stat-icon">📍</div></div>
+            <div class="stat-card green"><h4>Enumerator</h4><div class="stat-value"><%= totalEnum %></div><div class="stat-sub">Petugas lapangan</div><div class="stat-icon">👤</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-toolbar">
+                    <div><div class="card-title">Data Responden Terbaru</div><div class="card-subtitle">Menampilkan <%= data.length %> dari <%= totalEntri %> entri</div></div>
+                    <a href="/tambah" class="btn btn-primary">+ Tambah Data</a>
+                </div>
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <a href="?filter=semua" class="filter-btn <%= filter==='semua'?'active':'' %>">Semua (<%= totalEntri %>)</a>
+                        <a href="?filter=hamil" class="filter-btn <%= filter==='hamil'?'active':'' %>">Ibu Hamil (<%= totalHamil %>)</a>
+                        <a href="?filter=balita" class="filter-btn <%= filter==='balita'?'active':'' %>">Balita (<%= totalBalita %>)</a>
+                    </div>
+                    <form method="GET" style="display:flex;gap:8px;align-items:center;">
+                        <input type="hidden" name="filter" value="<%= filter %>">
+                        <input type="text" name="search" class="search-input" placeholder="Cari nama responden..." value="<%= search %>">
+                        <a href="/export" class="btn btn-outline btn-sm">📥 Ekspor</a>
+                    </form>
+                </div>
+                <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead><tr><th>No</th><th>Nama Responden</th><th>Enumerator</th><th>Wilayah</th><th>Desa</th><th>Waktu Input</th><th>Kategori</th><th style="text-align:center;">Aksi</th></tr></thead>
+                    <tbody>
+                        <% if(data.length > 0) { data.forEach(function(row, i) { %>
+                        <tr>
+                            <td style="color:var(--gray-400);font-size:12px;"><%= String(i+1).padStart(3,'0') %></td>
+                            <td><strong><%= row.nama_lengkap %></strong><div style="font-size:11px;color:var(--gray-400);">No. <%= row.no_responden %></div></td>
+                            <td style="color:var(--gray-500);"><%= row.nama_enumerator %></td>
+                            <td><%= row.wilayah_kecamatan %></td>
+                            <td><%= row.desa_kelurahan %></td>
+                            <td style="font-size:12px;"><strong><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}) : '-' %></strong><br><span style="color:var(--gray-400);"><%= row.createdAt ? new Date(row.createdAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}) : '' %> WIB</span></td>
+                            <td><span class="tag <%= row.kategori==='Hamil'?'tag-hamil':'tag-balita' %>"><%= row.kategori==='Hamil'?'Ibu Hamil':'Balita' %></span></td>
+                            <td style="text-align:center;"><div style="display:flex;gap:4px;justify-content:center;"><a href="/edit/<%= row._id %>" class="btn-icon" title="Edit">✏️</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" title="Hapus" onclick="return confirm('Yakin hapus?')">🗑️</a></div></td>
+                        </tr>
+                        <% }); } else { %>
+                        <tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>Belum ada data responden.</p><a href="/tambah" class="btn btn-primary" style="margin-top:12px;">+ Tambah Data</a></div></td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function updateWaktu(){const now=new Date();document.getElementById('lastUpdate').innerText='Terakhir diperbarui: '+now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})+' WIB';}
+    updateWaktu();setInterval(updateWaktu,60000);
+    </script>
+</body>
+</html>

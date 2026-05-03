@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Responden - E-GiziTrack</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+    <% const currentPage = ''; %>
+    <%- include('partials/navbar') %>
+
+    <% if(success) { %>
+    <div class="toast" id="successToast">
+        <span style="font-size:20px;">✅</span>
+        <div><strong>Data berhasil diperbarui!</strong><div style="font-size:12px;color:var(--gray-500);">Perubahan telah tersimpan.</div></div>
+        <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+    </div>
+    <script>setTimeout(()=>{const t=document.getElementById('successToast');if(t)t.remove();},4000);</script>
+    <% } %>
+
+    <div style="max-width:720px;margin:32px auto;padding:0 16px;">
+        <div class="card">
+            <div class="modal-header">
+                <div><h2 style="font-size:17px;font-weight:600;color:var(--green-800);">Edit Data Responden</h2><p style="font-size:12px;color:var(--gray-500);margin-top:2px;"><%= data.nama_lengkap %></p></div>
+                <a href="/dashboard" class="modal-close">✕</a>
+            </div>
+            <form action="/edit/<%= data._id %>" method="POST">
+                <div class="modal-body">
+                    <div class="form-grid">
+                        <div class="form-group"><label class="form-label">Nama Lengkap *</label><input type="text" name="nama_responden" class="form-control" value="<%= data.nama_lengkap %>" required></div>
+                        <div class="form-group"><label class="form-label">No. Responden</label><input type="text" name="no_responden" class="form-control" value="<%= data.no_responden %>" required></div>
+                        <div class="form-group"><label class="form-label">Kategori</label><select name="kategori" class="form-control" id="editKategori" onchange="toggleEditFields()"><option value="Hamil" <%= data.kategori==='Hamil'?'selected':'' %>>Ibu Hamil</option><option value="Balita" <%= data.kategori==='Balita'?'selected':'' %>>Balita</option></select></div>
+                        <div class="form-group"><label class="form-label">Wilayah</label><select name="wilayah" class="form-control" required><% ['Pontianak Kota','Pontianak Barat','Pontianak Selatan','Pontianak Tenggara','Pontianak Timur','Pontianak Utara'].forEach(function(w) { %><option value="<%= w %>" <%= data.wilayah_kecamatan===w?'selected':'' %>><%= w %></option><% }); %></select></div>
+                        <div class="form-group"><label class="form-label">Desa/Kelurahan</label><input type="text" name="desa" class="form-control" value="<%= data.desa_kelurahan %>" required></div>
+                        <div class="form-group"><label class="form-label" id="editUsiaLabel">Usia</label><input type="number" name="usia" class="form-control" value="<%= data.usia||'' %>"></div>
+                        <div class="form-group" id="editUsiaHamil"><label class="form-label">Usia Kehamilan (minggu)</label><input type="number" name="usia_hamil" class="form-control" value="<%= data.usia_hamil||'' %>"></div>
+                        <div class="form-group"><label class="form-label">Berat Badan (kg)</label><input type="number" step="0.1" name="berat" class="form-control" value="<%= data.berat_badan||'' %>"></div>
+                        <div class="form-group"><label class="form-label">Tinggi Badan (cm)</label><input type="number" step="0.1" name="tinggi" class="form-control" value="<%= data.tinggi_badan||'' %>"></div>
+                        <div class="form-group"><label class="form-label">LILA (cm)</label><input type="number" step="0.1" name="lila" class="form-control" value="<%= data.LILA||'' %>"></div>
+                        <div class="form-group"><label class="form-label">Status Gizi</label><select name="status_gizi" class="form-control"><% ['Normal','Risiko KEK','Kekurangan Gizi','Obesitas'].forEach(function(sg) { %><option value="<%= sg %>" <%= data.status_gizi===sg?'selected':'' %>><%= sg %></option><% }); %></select></div>
+                        <div class="form-group full"><label class="form-label">Alamat Lengkap</label><textarea name="alamat" class="form-control" rows="2"><%= data.alamat_lengkap||'' %></textarea></div>
+                        <div class="form-group full"><label class="form-label">Catatan</label><textarea name="catatan" class="form-control" rows="2"><%= data.catatan||'' %></textarea></div>
+                    </div>
+                    <% if(error) { %><div class="alert alert-danger" style="margin-top:16px;">⚠️ <%= error %></div><% } %>
+                </div>
+                <div class="modal-footer"><a href="/dashboard" class="btn btn-outline">Batal</a><button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button></div>
+            </form>
+        </div>
+    </div>
+<script>
+function toggleEditFields(){const k=document.getElementById('editKategori').value;document.getElementById('editUsiaLabel').textContent=k==='Balita'?'Usia (bulan)':'Usia (tahun)';document.getElementById('editUsiaHamil').style.display=k==='Balita'?'none':'block';}
+toggleEditFields();
+</script>
+</body>
+</html>

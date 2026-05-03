@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Responden - E-GiziTrack</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <style>
+        .kategori-toggle{display:flex;gap:10px}
+        .kategori-opt{flex:1;padding:14px;border:2px solid var(--gray-200);border-radius:var(--radius-md);cursor:pointer;text-align:center;transition:all var(--transition);background:var(--white)}
+        .kategori-opt:hover{border-color:var(--green-500)}
+        .kategori-opt.active{border-color:var(--green-600);background:var(--green-50)}
+        .kategori-opt .k-icon{font-size:24px;display:block;margin-bottom:4px}
+        .kategori-opt .k-label{font-size:13px;font-weight:600;color:var(--gray-700)}
+        .steps{display:flex;gap:8px;margin-bottom:24px}
+        .step{flex:1;height:4px;border-radius:2px;background:var(--gray-200);transition:background .3s}
+        .step.active{background:var(--green-500)}.step.done{background:var(--green-600)}
+        .form-section{margin-bottom:20px}
+        .form-section-title{font-size:13px;font-weight:600;color:var(--green-800);padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:6px}
+        .success-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;justify-content:center;align-items:center;z-index:3000;backdrop-filter:blur(4px)}
+        .success-card{background:var(--white);border-radius:var(--radius-lg);padding:40px;text-align:center;max-width:400px;box-shadow:var(--shadow-lg);animation:slideUp .3s ease}
+        .success-card .icon{font-size:56px;margin-bottom:16px}.success-card h3{font-size:18px;margin-bottom:8px}
+        .success-card p{color:var(--gray-500);font-size:14px;margin-bottom:24px}
+        .success-actions{display:flex;gap:10px;justify-content:center}
+    </style>
+</head>
+<body>
+    <% const currentPage = 'tambah'; %>
+    <%- include('partials/navbar') %>
+
+    <% if(success) { %>
+    <div class="success-overlay">
+        <div class="success-card">
+            <div class="icon">✅</div>
+            <h3>Data Berhasil Ditambahkan!</h3>
+            <p>Responden baru telah tersimpan ke database.</p>
+            <div class="success-actions">
+                <a href="/tambah" class="btn btn-outline">+ Tambah Lagi</a>
+                <a href="/dashboard" class="btn btn-primary">Kembali ke Dashboard</a>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <div style="max-width:720px;margin:32px auto;padding:0 16px;">
+        <div class="card">
+            <div class="modal-header">
+                <div><h2 style="font-size:17px;font-weight:600;color:var(--green-800);">Tambah Responden Baru</h2><p style="font-size:12px;color:var(--gray-500);margin-top:2px;">Isi data dengan lengkap untuk pendataan gizi</p></div>
+                <a href="/dashboard" class="modal-close" title="Kembali">✕</a>
+            </div>
+            <form action="/tambah" method="POST" id="formTambah">
+                <div class="modal-body">
+                    <div class="steps"><div class="step active" id="step1"></div><div class="step" id="step2"></div><div class="step" id="step3"></div></div>
+                    <div class="form-section">
+                        <div class="form-section-title">📋 Identitas Responden</div>
+                        <div class="form-grid">
+                            <div class="form-group"><label class="form-label">Nama Lengkap <span class="required">*</span></label><input type="text" name="nama_responden" class="form-control" placeholder="Masukkan nama lengkap" required id="inputNama"></div>
+                            <div class="form-group"><label class="form-label">No. Responden <span class="required">*</span></label><input type="text" name="no_responden" class="form-control" value="" placeholder="IH-<%= String(nextNum).padStart(3,'0') %>" required id="inputNoRes"><div class="form-hint">Format: IH-001 / BL-001</div></div>
+                            <div class="form-group full">
+                                <label class="form-label">Kategori <span class="required">*</span></label>
+                                <div class="kategori-toggle">
+                                    <div class="kategori-opt active" onclick="setKategori('Hamil',this)"><span class="k-icon">🤰</span><span class="k-label">Ibu Hamil</span></div>
+                                    <div class="kategori-opt" onclick="setKategori('Balita',this)"><span class="k-icon">👶</span><span class="k-label">Balita</span></div>
+                                </div>
+                                <input type="hidden" name="kategori" id="kategoriInput" value="Hamil">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-title">📍 Lokasi & Enumerator</div>
+                        <div class="form-grid">
+                            <div class="form-group"><label class="form-label">Wilayah (Kecamatan) <span class="required">*</span></label><select name="wilayah" class="form-control" required><option value="">Pilih kecamatan...</option><option value="Pontianak Kota">Pontianak Kota</option><option value="Pontianak Barat">Pontianak Barat</option><option value="Pontianak Selatan">Pontianak Selatan</option><option value="Pontianak Tenggara">Pontianak Tenggara</option><option value="Pontianak Timur">Pontianak Timur</option><option value="Pontianak Utara">Pontianak Utara</option></select></div>
+                            <div class="form-group"><label class="form-label">Desa/Kelurahan <span class="required">*</span></label><input type="text" name="desa" class="form-control" placeholder="Nama kelurahan/desa" required></div>
+                            <div class="form-group"><label class="form-label">Nama Enumerator</label><input type="text" name="nama_enumerator" class="form-control" value="<%= session.nama || '' %>" readonly style="background:var(--gray-50);"></div>
+                            <div class="form-group full"><label class="form-label">Alamat Lengkap</label><textarea name="alamat" class="form-control" rows="2" placeholder="Alamat lengkap responden"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-section-title">⚕️ Data Kesehatan & Gizi</div>
+                        <div class="form-grid">
+                            <div class="form-group"><label class="form-label" id="usiaLabel">Usia (tahun)</label><input type="number" name="usia" class="form-control" id="usiaInput" placeholder="Tahun" min="0"></div>
+                            <div class="form-group" id="usiaHamilGroup"><label class="form-label">Usia Kehamilan (minggu)</label><input type="number" name="usia_hamil" class="form-control" placeholder="Minggu" min="1" max="42"></div>
+                            <div class="form-group"><label class="form-label">Berat Badan (kg)</label><input type="number" step="0.1" name="berat" class="form-control" placeholder="0.0" min="0"></div>
+                            <div class="form-group"><label class="form-label">Tinggi Badan (cm)</label><input type="number" step="0.1" name="tinggi" class="form-control" placeholder="0.0" min="0"></div>
+                            <div class="form-group"><label class="form-label">LILA (cm)</label><input type="number" step="0.1" name="lila" class="form-control" placeholder="0.0" min="0" id="lilaInput"><div class="form-hint" id="lilaHint"></div></div>
+                            <div class="form-group"><label class="form-label">Status Gizi</label><select name="status_gizi" class="form-control" id="statusGizi"><option value="Normal">Normal</option><option value="Risiko KEK">Risiko KEK</option><option value="Kekurangan Gizi">Kekurangan Gizi</option><option value="Obesitas">Obesitas</option></select></div>
+                            <div class="form-group full"><label class="form-label">Catatan Tambahan</label><textarea name="catatan" class="form-control" rows="2" placeholder="Catatan kondisi atau informasi penting"></textarea></div>
+                        </div>
+                    </div>
+                    <% if(error) { %><div class="alert alert-danger">⚠️ <%= error %></div><% } %>
+                </div>
+                <div class="modal-footer">
+                    <a href="/dashboard" class="btn btn-outline">Batal</a>
+                    <button type="submit" class="btn btn-primary">💾 Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<script>
+const nextNum=<%= nextNum %>;
+function setKategori(v,el){document.getElementById('kategoriInput').value=v;document.querySelectorAll('.kategori-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');toggleFields(v);updateNoRes(v);}
+function toggleFields(k){document.getElementById('usiaLabel').textContent=k==='Balita'?'Usia (bulan)':'Usia (tahun)';document.getElementById('usiaInput').placeholder=k==='Balita'?'Bulan':'Tahun';document.getElementById('usiaHamilGroup').style.display=k==='Balita'?'none':'block';}
+function updateNoRes(k){document.getElementById('inputNoRes').value=(k==='Hamil'?'IH':'BL')+'-'+String(nextNum).padStart(3,'0');}
+document.getElementById('lilaInput').addEventListener('input',function(){const v=parseFloat(this.value),h=document.getElementById('lilaHint'),s=document.getElementById('statusGizi');if(v&&v<23.5){h.textContent='⚠️ LILA < 23.5 cm → Risiko KEK';h.style.color='var(--red-500)';s.value='Risiko KEK';}else if(v){h.textContent='✅ LILA normal';h.style.color='var(--green-600)';s.value='Normal';}else{h.textContent='';}});
+toggleFields('Hamil');updateNoRes('Hamil');
+</script>
+</body>
+</html>

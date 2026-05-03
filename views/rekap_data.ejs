@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekapitulasi Data - E-GiziTrack</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+    <% const currentPage = 'rekap'; %>
+    <%- include('partials/navbar') %>
+    <div class="page-container">
+        <div class="page-header"><h1>Rekapitulasi Data</h1><p>Manajemen dan pemantauan semua entri data gizi wilayah Pontianak.</p></div>
+        <div class="card"><div class="card-body">
+            <div class="table-toolbar">
+                <div class="filter-group">
+                    <a href="/rekap?<%= search ? 'search='+encodeURIComponent(search) : '' %>" class="filter-btn <%= !filterKat?'active':'' %>">Semua (<%= totalAll %>)</a>
+                    <a href="/rekap?kat=Hamil<%= search ? '&search='+encodeURIComponent(search) : '' %>" class="filter-btn <%= filterKat==='Hamil'?'active':'' %>">Ibu Hamil (<%= totalHamil %>)</a>
+                    <a href="/rekap?kat=Balita<%= search ? '&search='+encodeURIComponent(search) : '' %>" class="filter-btn <%= filterKat==='Balita'?'active':'' %>">Balita (<%= totalBalita %>)</a>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <form method="GET"><% if(filterKat) { %><input type="hidden" name="kat" value="<%= filterKat %>"><% } %><input type="text" name="search" class="search-input" placeholder="Cari nama / No. Responden..." value="<%= search %>"></form>
+                    <a href="/export" class="btn btn-outline btn-sm">📥 Ekspor</a>
+                </div>
+            </div>
+            <div style="overflow-x:auto;"><table class="data-table">
+                <thead><tr><th>Kategori</th><th>No. Resp</th><th>Nama</th><th>Wilayah</th><th>Desa</th><th>BB / TB</th><th>LILA</th><th>Status</th><th>Enumerator</th><th>Tanggal</th><th style="text-align:right;">Aksi</th></tr></thead>
+                <tbody>
+                    <% if(data.length > 0) { data.forEach(function(row) { %>
+                    <tr>
+                        <td><span class="tag <%= row.kategori==='Hamil'?'tag-hamil':'tag-balita' %>"><%= row.kategori==='Hamil'?'Ibu Hamil':'Balita' %></span></td>
+                        <td style="color:var(--gray-400);font-size:12px;"><%= row.no_responden %></td>
+                        <td><strong><%= row.nama_lengkap %></strong></td>
+                        <td><%= row.wilayah_kecamatan %></td>
+                        <td><%= row.desa_kelurahan %></td>
+                        <td style="font-size:12px;"><%= row.berat_badan||'-' %> kg / <%= row.tinggi_badan||'-' %> cm</td>
+                        <td><span style="color:<%= (row.LILA && row.LILA < 23.5) ? 'var(--red-500)' : 'var(--green-600)' %>;font-weight:600;"><%= row.LILA||'-' %> cm</span></td>
+                        <td><span class="tag <%= (row.status_gizi && (row.status_gizi.includes('KEK') || row.status_gizi.includes('Kekurangan'))) ? 'tag-risiko' : 'tag-normal' %>"><%= row.status_gizi||'-' %></span></td>
+                        <td style="color:var(--gray-500);font-size:12px;"><%= row.nama_enumerator %></td>
+                        <td style="font-size:12px;"><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID') : '-' %></td>
+                        <td style="text-align:right;"><div style="display:flex;gap:4px;justify-content:flex-end;"><a href="/edit/<%= row._id %>" class="btn-icon">✏️</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" onclick="return confirm('Yakin hapus?')">🗑️</a></div></td>
+                    </tr>
+                    <% }); } else { %>
+                    <tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><p>Tidak ada data ditemukan.</p></div></td></tr>
+                    <% } %>
+                </tbody>
+            </table></div>
+            <div style="margin-top:16px;font-size:12px;color:var(--gray-400);">Menampilkan <%= data.length %> data</div>
+        </div></div>
+    </div>
+</body>
+</html>

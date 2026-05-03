@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - E-GiziTrack</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <style>
+        .settings-grid{display:grid;grid-template-columns:340px 1fr;gap:24px}
+        .profile-banner{height:80px;background:linear-gradient(135deg,var(--green-700),var(--green-600));border-radius:var(--radius-md) var(--radius-md) 0 0}
+        .profile-avatar{width:72px;height:72px;border-radius:var(--radius-full);background:var(--green-800);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;margin:-36px auto 12px;border:4px solid var(--white);box-shadow:var(--shadow-md)}
+        .profile-name{font-size:18px;font-weight:700}
+        .profile-role{display:inline-block;padding:3px 12px;border-radius:var(--radius-full);font-size:11px;font-weight:600;margin-top:4px}
+        .role-admin{background:var(--green-100);color:var(--green-700)}
+        .role-enum{background:var(--blue-100);color:var(--blue-500)}
+        .info-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+        .info-row:last-child{border-bottom:none}
+        .info-label{color:var(--gray-500);min-width:100px;font-size:13px}
+        @media(max-width:768px){.settings-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <% const currentPage = 'pengaturan'; %>
+    <%- include('partials/navbar') %>
+    <%
+    const nama = session.nama || 'User';
+    const parts = nama.trim().split(' ');
+    let initials = parts[0][0].toUpperCase();
+    if (parts.length > 1) initials += parts[parts.length-1][0].toUpperCase();
+    const roleDisplay = isAdmin ? 'Administrator' : 'Enumerator';
+    %>
+    <div class="page-container">
+        <div class="page-header"><h1>Pengaturan</h1><p>Kelola profil dan konfigurasi sistem.</p></div>
+        <div class="settings-grid">
+            <div>
+                <div class="card">
+                    <div class="profile-banner"></div>
+                    <div style="padding:0 24px 24px;text-align:center;">
+                        <div class="profile-avatar"><%= initials %></div>
+                        <div class="profile-name"><%= nama %></div>
+                        <span class="profile-role <%= isAdmin ? 'role-admin' : 'role-enum' %>"><%= roleDisplay %></span>
+                        <div style="display:flex;gap:16px;justify-content:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100);">
+                            <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--green-700);"><%= userEntries %></div><div style="font-size:11px;color:var(--gray-500);">Data Diinput</div></div>
+                            <div style="text-align:center;"><div style="font-size:20px;">✅</div><div style="font-size:11px;color:var(--gray-500);">Status Aktif</div></div>
+                        </div>
+                        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-100);text-align:left;">
+                            <div class="info-row"><span class="info-label">👤 Username</span><strong><%= session.username %></strong></div>
+                            <div class="info-row"><span class="info-label">🔑 Role</span><strong><%= roleDisplay %></strong></div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/logout" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:12px;color:var(--red-500);border-color:var(--red-500);">🚪 Keluar dari Sistem</a>
+            </div>
+            <div>
+                <% if(isAdmin) { %>
+                <div class="card"><div class="card-body">
+                    <div class="card-title">👥 Manajemen Pengguna</div>
+                    <div class="card-subtitle">Daftar semua pengguna sistem</div>
+                    <div style="overflow-x:auto;margin-top:16px;"><table class="data-table">
+                        <thead><tr><th>Nama</th><th>Username</th><th>Role</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <% users.forEach(function(u) { %>
+                            <tr><td><strong><%= u.full_name %></strong></td><td style="color:var(--gray-500);"><%= u.username %></td><td><span class="tag <%= u.role==='admin'?'tag-normal':'tag-hamil' %>"><%= u.role.charAt(0).toUpperCase()+u.role.slice(1) %></span></td><td><span style="color:var(--green-600);font-weight:500;">● Aktif</span></td></tr>
+                            <% }); %>
+                        </tbody>
+                    </table></div>
+                </div></div>
+                <% } else { %>
+                <div class="alert alert-danger" style="align-items:center;"><span style="font-size:24px;">🔒</span><div><strong style="display:block;margin-bottom:4px;">Akses Terbatas</strong>Halaman manajemen pengguna hanya tersedia untuk Administrator.</div></div>
+                <div class="card" style="margin-top:16px;"><div class="card-body">
+                    <div class="card-title">📊 Ringkasan Aktivitas</div>
+                    <div style="text-align:center;padding:32px;">
+                        <div style="font-size:48px;font-weight:700;color:var(--green-600);"><%= userEntries %></div>
+                        <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">Total entri data Anda</div>
+                        <a href="/tambah" class="btn btn-primary" style="margin-top:16px;">+ Tambah Data Baru</a>
+                    </div>
+                </div></div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

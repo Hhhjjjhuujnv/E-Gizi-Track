@@ -1,0 +1,43 @@
+<%
+const _nama = session.nama || 'User';
+const _parts = _nama.trim().split(' ');
+let _initials = _parts[0][0].toUpperCase();
+if (_parts.length > 1) _initials += _parts[_parts.length-1][0].toUpperCase();
+
+const _page = typeof currentPage !== 'undefined' ? currentPage : '';
+%>
+<nav class="navbar">
+    <a href="/dashboard" class="nav-brand">
+        <img src="/assets/images/logo.png" alt="E-GiziTrack">
+        <div>
+            <span>E-GiziTrack</span>
+            <small>Sistem Pengumpulan Data Gizi</small>
+        </div>
+    </a>
+    <div class="nav-links">
+        <a href="/dashboard" class="<%= _page==='dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/rekap" class="<%= _page==='rekap' ? 'active' : '' %>">Rekap Data</a>
+        <a href="/laporan" class="<%= _page==='laporan' ? 'active' : '' %>">Laporan</a>
+        <a href="/pengaturan" class="<%= _page==='pengaturan' ? 'active' : '' %>">Pengaturan</a>
+    </div>
+    <div class="nav-right">
+        <a href="/tambah" class="btn-nav-add">+ Tambah Data</a>
+        <div class="avatar" onclick="document.getElementById('avatarDropdown').classList.toggle('show')">
+            <%= _initials %>
+            <div class="avatar-dropdown" id="avatarDropdown">
+                <div class="dropdown-header">
+                    <strong><%= _nama %></strong>
+                    <small><%= (session.role||'user').charAt(0).toUpperCase() + (session.role||'user').slice(1) %></small>
+                </div>
+                <a href="/pengaturan">⚙️ Pengaturan</a>
+                <a href="/logout" class="dropdown-logout">🚪 Keluar</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<script>
+document.addEventListener('click', function(e) {
+    const dd = document.getElementById('avatarDropdown');
+    if (dd && !e.target.closest('.avatar')) dd.classList.remove('show');
+});
+</script>
