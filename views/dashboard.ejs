@@ -76,9 +76,21 @@
                             <td style="color:var(--gray-500);"><%= row.nama_enumerator %></td>
                             <td><%= row.wilayah_kecamatan %></td>
                             <td><%= row.desa_kelurahan %></td>
-                            <td style="font-size:12px;"><strong><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}) : '-' %></strong><br><span style="color:var(--gray-400);"><%= row.createdAt ? new Date(row.createdAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}) : '' %> WIB</span></td>
+                            <td style="font-size:12px;">
+                                <strong><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric', timeZone: 'Asia/Jakarta'}) : '-' %></strong><br>
+                                <span style="color:var(--gray-400);"><%= row.createdAt ? new Date(row.createdAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit', timeZone: 'Asia/Jakarta'}) : '' %> WIB</span>
+                            </td>
                             <td><span class="tag <%= row.kategori==='Hamil'?'tag-hamil':'tag-balita' %>"><%= row.kategori==='Hamil'?'Ibu Hamil':'Balita' %></span></td>
-                            <td style="text-align:center;"><div style="display:flex;gap:4px;justify-content:center;"><a href="/edit/<%= row._id %>" class="btn-icon" title="Edit">Edit</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" title="Hapus" onclick="return confirm('Yakin hapus?')">Hapus</a></div></td>
+                            <td style="text-align:center;">
+                                <div style="display:flex;gap:4px;justify-content:center;">
+                                    <a href="/edit/<%= row._id %>" class="btn-icon" title="Edit">
+                                        <span class="iconify" data-icon="lucide:edit-3"></span>
+                                    </a>
+                                    <a href="/hapus/<%= row._id %>" class="btn-icon danger" title="Hapus" onclick="return confirm('Yakin hapus?')">
+                                        <span class="iconify" data-icon="lucide:trash-2"></span>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                         <% }); } else { %>
                         <tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>Belum ada data responden.</p><a href="/tambah" class="btn btn-primary" style="margin-top:12px;">+ Tambah Data</a></div></td></tr>

@@ -37,8 +37,17 @@
                         <td><span style="color:<%= (row.LILA && row.LILA < 23.5) ? 'var(--red-500)' : 'var(--green-600)' %>;font-weight:600;"><%= row.LILA||'-' %> cm</span></td>
                         <td><span class="tag <%= (row.status_gizi && (row.status_gizi.includes('KEK') || row.status_gizi.includes('Kekurangan'))) ? 'tag-risiko' : 'tag-normal' %>"><%= row.status_gizi||'-' %></span></td>
                         <td style="color:var(--gray-500);font-size:12px;"><%= row.nama_enumerator %></td>
-                        <td style="font-size:12px;"><%= row.createdAt ? new Date(row.createdAt).toLocaleDateString('id-ID') : '-' %></td>
-                        <td style="text-align:right;"><div style="display:flex;gap:4px;justify-content:flex-end;"><a href="/edit/<%= row._id %>" class="btn-icon">Edit</a><a href="/hapus/<%= row._id %>" class="btn-icon danger" onclick="return confirm('Yakin hapus?')">Hapus</a></div></td>
+                        <td style="font-size:12px;"><%= row.createdAt ? new Date(row.createdAt).toLocaleString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'Asia/Jakarta'}) : '-' %></td>
+                        <td style="text-align:right;">
+                            <div style="display:flex;gap:4px;justify-content:flex-end;">
+                                <a href="/edit/<%= row._id %>" class="btn-icon" title="Edit">
+                                    <span class="iconify" data-icon="lucide:edit-3"></span>
+                                </a>
+                                <a href="/hapus/<%= row._id %>" class="btn-icon danger" title="Hapus" onclick="return confirm('Yakin hapus?')">
+                                    <span class="iconify" data-icon="lucide:trash-2"></span>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                     <% }); } else { %>
                     <tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><p>Tidak ada data ditemukan.</p></div></td></tr>
