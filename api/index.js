@@ -277,14 +277,14 @@ app.get('/dashboard', requireAuth, async (req, res) => {
   if (filter === 'balita') query.kategori = 'Balita';
   if (search) query.$or = [{ nama_lengkap: { $regex: search, $options: 'i' } }, { no_responden: { $regex: search, $options: 'i' } }];
   const data = await DB.findResponden(query, { limit: 50 });
-  res.render('dashboard', { totalHamil, totalBalita, totalWilayah: wilayah.length, totalEnum, data, filter, search, totalEntri: totalHamil + totalBalita });
+  res.render('dashboard', { currentPage: 'dashboard', totalHamil, totalBalita, totalWilayah: wilayah.length, totalEnum, data, filter, search, totalEntri: totalHamil + totalBalita });
 });
 
 app.get('/tambah', requireAuth, async (req, res) => {
   const last = await DB.getLastResponden();
   let nextNum = 1;
   if (last && last.no_responden) { const m = last.no_responden.match(/(\d+)$/); if (m) nextNum = parseInt(m[1]) + 1; }
-  res.render('tambah', { success: false, error: '', nextNum });
+  res.render('tambah', { currentPage: 'tambah', success: false, error: '', nextNum });
 });
 
 app.post('/tambah', requireAuth, async (req, res) => {
@@ -299,8 +299,8 @@ app.post('/tambah', requireAuth, async (req, res) => {
     const last = await DB.getLastResponden();
     let nextNum = 1;
     if (last && last.no_responden) { const m = last.no_responden.match(/(\d+)$/); if (m) nextNum = parseInt(m[1]) + 1; }
-    res.render('tambah', { success: true, error: '', nextNum });
-  } catch (err) { res.render('tambah', { success: false, error: err.message, nextNum: 1 }); }
+    res.render('tambah', { currentPage: 'tambah', success: true, error: '', nextNum });
+  } catch (err) { res.render('tambah', { currentPage: 'tambah', success: false, error: err.message, nextNum: 1 }); }
 });
 
 app.get('/rekap', requireAuth, async (req, res) => {
@@ -310,13 +310,13 @@ app.get('/rekap', requireAuth, async (req, res) => {
   if (kat && ['Hamil', 'Balita'].includes(kat)) query.kategori = kat;
   if (search) query.$or = [{ nama_lengkap: { $regex: search, $options: 'i' } }, { no_responden: { $regex: search, $options: 'i' } }, { nama_enumerator: { $regex: search, $options: 'i' } }];
   const [data, totalAll, totalHamil, totalBalita] = await Promise.all([DB.findResponden(query), DB.countResponden(), DB.countResponden({ kategori: 'Hamil' }), DB.countResponden({ kategori: 'Balita' })]);
-  res.render('rekap_data', { data, search, filterKat: kat, totalAll, totalHamil, totalBalita });
+  res.render('rekap_data', { currentPage: 'rekap', data, search, filterKat: kat, totalAll, totalHamil, totalBalita });
 });
 
 app.get('/edit/:id', requireAuth, async (req, res) => {
   const data = await DB.findRespondenById(req.params.id);
   if (!data) return res.send("<script>alert('Data tidak ditemukan.'); window.location='/dashboard';</script>");
-  res.render('edit', { data, success: false, error: '' });
+  res.render('edit', { currentPage: '', data, success: false, error: '' });
 });
 
 app.post('/edit/:id', requireAuth, async (req, res) => {
@@ -329,15 +329,15 @@ app.post('/edit/:id', requireAuth, async (req, res) => {
       status_gizi: d.status_gizi, alamat_lengkap: d.alamat, catatan: d.catatan
     });
     const data = await DB.findRespondenById(req.params.id);
-    res.render('edit', { data, success: true, error: '' });
-  } catch (err) { const data = await DB.findRespondenById(req.params.id); res.render('edit', { data, success: false, error: err.message }); }
+    res.render('edit', { currentPage: '', data, success: true, error: '' });
+  } catch (err) { const data = await DB.findRespondenById(req.params.id); res.render('edit', { currentPage: '', data, success: false, error: err.message }); }
 });
 
 app.get('/hapus/:id', requireAuth, async (req, res) => { await DB.deleteResponden(req.params.id); res.redirect(req.get('Referer') || '/dashboard'); });
 
 app.get('/laporan', requireAuth, async (req, res) => {
   const [totalHamil, totalBalita, totalKek, sebaran, statusDist] = await Promise.all([DB.countResponden({ kategori: 'Hamil' }), DB.countResponden({ kategori: 'Balita' }), DB.countResponden({ LILA: { $lt: 23.5 } }), DB.aggregateSebaran(), DB.aggregateStatus()]);
-  res.render('laporan', { totalHamil, totalBalita, totalKek, sebaran, statusDist });
+  res.render('laporan', { currentPage: 'laporan', totalHamil, totalBalita, totalKek, sebaran, statusDist });
 });
 
 app.get('/pengaturan', requireAuth, async (req, res) => {
@@ -345,7 +345,7 @@ app.get('/pengaturan', requireAuth, async (req, res) => {
   const isAdmin = adminList.includes(req.session.username.toLowerCase());
   const userEntries = await DB.countResponden({ nama_enumerator: req.session.nama });
   let users = []; if (isAdmin) users = await DB.allUsers({ role: 1, full_name: 1 });
-  res.render('pengaturan', { isAdmin, userEntries, users });
+  res.render('pengaturan', { currentPage: 'pengaturan', isAdmin, userEntries, users });
 });
 
 app.get('/export', requireAuth, async (req, res) => {
