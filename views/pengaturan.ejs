@@ -41,20 +41,28 @@
                         <span class="profile-role <%= isAdmin ? 'role-admin' : 'role-enum' %>"><%= roleDisplay %></span>
                         <div style="display:flex;gap:16px;justify-content:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100);">
                             <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--green-700);"><%= userEntries %></div><div style="font-size:11px;color:var(--gray-500);">Data Diinput</div></div>
-                            <div style="text-align:center;"><div style="font-size:20px;">✅</div><div style="font-size:11px;color:var(--gray-500);">Status Aktif</div></div>
+                        <div style="display:flex;gap:16px;justify-content:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100);">
+                            <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:var(--green-700);"><%= userEntries %></div><div style="font-size:11px;color:var(--gray-500);">Data Diinput</div></div>
+                            <div style="text-align:center;"><div style="font-size:20px;color:var(--green-500);"><span class="iconify" data-icon="lucide:check-circle"></span></div><div style="font-size:11px;color:var(--gray-500);">Status Aktif</div></div>
                         </div>
                         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-100);text-align:left;">
-                            <div class="info-row"><span class="info-label">👤 Username</span><strong><%= session.username %></strong></div>
-                            <div class="info-row"><span class="info-label">🔑 Role</span><strong><%= roleDisplay %></strong></div>
+                            <div class="info-row"><span class="info-label" style="display:flex;align-items:center;gap:6px;"><span class="iconify" data-icon="lucide:user" style="font-size:14px;"></span> Username</span><strong><%= session.username %></strong></div>
+                            <div class="info-row"><span class="info-label" style="display:flex;align-items:center;gap:6px;"><span class="iconify" data-icon="lucide:key" style="font-size:14px;"></span> Role</span><strong><%= roleDisplay %></strong></div>
                         </div>
                     </div>
                 </div>
-                <a href="/logout" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:12px;color:var(--red-500);border-color:var(--red-500);">🚪 Keluar dari Sistem</a>
+                <a href="/logout" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:12px;color:var(--red-500);border-color:var(--red-500);display:flex;align-items:center;gap:8px;">
+                    <span class="iconify" data-icon="lucide:log-out"></span>
+                    Keluar dari Sistem
+                </a>
             </div>
             <div>
                 <% if(isAdmin) { %>
                 <div class="card"><div class="card-body">
-                    <div class="card-title">👥 Manajemen Pengguna</div>
+                    <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:users" style="color:var(--green-600);"></span>
+                        Manajemen Pengguna
+                    </div>
                     <div class="card-subtitle">Daftar semua pengguna sistem</div>
                     <div style="overflow-x:auto;margin-top:16px;"><table class="data-table">
                         <thead><tr><th>Nama</th><th>Username</th><th>Role</th><th>Status</th></tr></thead>
@@ -66,9 +74,15 @@
                     </table></div>
                 </div></div>
                 <% } else { %>
-                <div class="alert alert-danger" style="align-items:center;"><span style="font-size:24px;">🔒</span><div><strong style="display:block;margin-bottom:4px;">Akses Terbatas</strong>Halaman manajemen pengguna hanya tersedia untuk Administrator.</div></div>
+                <div class="alert alert-danger" style="align-items:center;display:flex;gap:12px;">
+                    <span class="iconify" data-icon="lucide:lock" style="font-size:24px;"></span>
+                    <div><strong style="display:block;margin-bottom:4px;">Akses Terbatas</strong>Halaman manajemen pengguna hanya tersedia untuk Administrator.</div>
+                </div>
                 <div class="card" style="margin-top:16px;"><div class="card-body">
-                    <div class="card-title">📊 Ringkasan Aktivitas</div>
+                    <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:bar-chart-3" style="color:var(--green-600);"></span>
+                        Ringkasan Aktivitas
+                    </div>
                     <div style="text-align:center;padding:32px;">
                         <div style="font-size:48px;font-weight:700;color:var(--green-600);"><%= userEntries %></div>
                         <div style="font-size:14px;color:var(--gray-500);margin-top:4px;">Total entri data Anda</div>

@@ -32,7 +32,9 @@
     <% if(success) { %>
     <div class="success-overlay">
         <div class="success-card">
-            <div class="icon">✅</div>
+            <div class="icon">
+                <span class="iconify" data-icon="lucide:check-circle" style="color:#22c55e;"></span>
+            </div>
             <h3>Data Berhasil Ditambahkan!</h3>
             <p>Responden baru telah tersimpan ke database.</p>
             <div class="success-actions">
@@ -46,7 +48,10 @@
     <div style="max-width:720px;margin:32px auto;padding:0 16px;">
         <div class="card">
             <div class="modal-header">
-                <div><h2 style="font-size:17px;font-weight:600;color:var(--green-800);">Tambah Responden Baru</h2><p style="font-size:12px;color:var(--gray-500);margin-top:2px;">Isi data dengan lengkap untuk pendataan gizi</p></div>
+                <div>
+                    <h2 style="font-size:17px;font-weight:600;color:var(--white);">Tambah Responden Baru</h2>
+                    <p style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;">Isi data dengan lengkap untuk pendataan gizi</p>
+                </div>
                 <a href="/dashboard" class="modal-close" title="Kembali">✕</a>
             </div>
             <form action="/tambah" method="POST" id="formTambah">
@@ -87,11 +92,19 @@
                             <div class="form-group full"><label class="form-label">Catatan Tambahan</label><textarea name="catatan" class="form-control" rows="2" placeholder="Catatan kondisi atau informasi penting"></textarea></div>
                         </div>
                     </div>
-                    <% if(error) { %><div class="alert alert-danger">Error: <%= error %></div><% } %>
+                    <% if(error) { %>
+                    <div class="alert alert-danger" style="display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:alert-triangle"></span>
+                        <%= error %>
+                    </div>
+                    <% } %>
                 </div>
                 <div class="modal-footer">
                     <a href="/dashboard" class="btn btn-outline">Batal</a>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    <button type="submit" class="btn btn-primary" style="display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:save"></span>
+                        Simpan Data
+                    </button>
                 </div>
             </form>
         </div>
@@ -101,7 +114,7 @@ const nextNum=<%= nextNum %>;
 function setKategori(v,el){document.getElementById('kategoriInput').value=v;document.querySelectorAll('.kategori-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active');toggleFields(v);updateNoRes(v);}
 function toggleFields(k){document.getElementById('usiaLabel').textContent=k==='Balita'?'Usia (bulan)':'Usia (tahun)';document.getElementById('usiaInput').placeholder=k==='Balita'?'Bulan':'Tahun';document.getElementById('usiaHamilGroup').style.display=k==='Balita'?'none':'block';}
 function updateNoRes(k){document.getElementById('inputNoRes').value=(k==='Hamil'?'IH':'BL')+'-'+String(nextNum).padStart(3,'0');}
-document.getElementById('lilaInput').addEventListener('input',function(){const v=parseFloat(this.value),h=document.getElementById('lilaHint'),s=document.getElementById('statusGizi');if(v&&v<23.5){h.textContent='⚠️ LILA < 23.5 cm → Risiko KEK';h.style.color='var(--red-500)';s.value='Risiko KEK';}else if(v){h.textContent='✅ LILA normal';h.style.color='var(--green-600)';s.value='Normal';}else{h.textContent='';}});
+document.getElementById('lilaInput').addEventListener('input',function(){const v=parseFloat(this.value),h=document.getElementById('lilaHint'),s=document.getElementById('statusGizi');if(v&&v<23.5){h.innerHTML='<span class="iconify" data-icon="lucide:alert-triangle"></span> LILA < 23.5 cm → Risiko KEK';h.style.color='var(--red-500)';s.value='Risiko KEK';}else if(v){h.innerHTML='<span class="iconify" data-icon="lucide:check"></span> LILA normal';h.style.color='var(--green-600)';s.value='Normal';}else{h.textContent='';}});
 toggleFields('Hamil');updateNoRes('Hamil');
 </script>
 </body>

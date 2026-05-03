@@ -12,7 +12,7 @@
 
     <% if(success) { %>
     <div class="toast" id="successToast">
-        <span style="font-size:20px;">✅</span>
+        <span class="iconify" data-icon="lucide:check-circle" style="font-size:20px;color:#22c55e;"></span>
         <div><strong>Data berhasil diperbarui!</strong><div style="font-size:12px;color:var(--gray-500);">Perubahan telah tersimpan.</div></div>
         <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
     </div>
@@ -22,7 +22,10 @@
     <div style="max-width:720px;margin:32px auto;padding:0 16px;">
         <div class="card">
             <div class="modal-header">
-                <div><h2 style="font-size:17px;font-weight:600;color:var(--green-800);">Edit Data Responden</h2><p style="font-size:12px;color:var(--gray-500);margin-top:2px;"><%= data.nama_lengkap %></p></div>
+                <div>
+                    <h2 style="font-size:17px;font-weight:600;color:var(--white);">Edit Data Responden</h2>
+                    <p style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;"><%= data.nama_lengkap %></p>
+                </div>
                 <a href="/dashboard" class="modal-close">✕</a>
             </div>
             <form action="/edit/<%= data._id %>" method="POST">
@@ -42,9 +45,20 @@
                         <div class="form-group full"><label class="form-label">Alamat Lengkap</label><textarea name="alamat" class="form-control" rows="2"><%= data.alamat_lengkap||'' %></textarea></div>
                         <div class="form-group full"><label class="form-label">Catatan</label><textarea name="catatan" class="form-control" rows="2"><%= data.catatan||'' %></textarea></div>
                     </div>
-                    <% if(error) { %><div class="alert alert-danger" style="margin-top:16px;">⚠️ <%= error %></div><% } %>
+                    <% if(error) { %>
+                    <div class="alert alert-danger" style="margin-top:16px;display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:alert-triangle"></span>
+                        <%= error %>
+                    </div>
+                    <% } %>
                 </div>
-                <div class="modal-footer"><a href="/dashboard" class="btn btn-outline">Batal</a><button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button></div>
+                <div class="modal-footer">
+                    <a href="/dashboard" class="btn btn-outline">Batal</a>
+                    <button type="submit" class="btn btn-primary" style="display:flex;align-items:center;gap:8px;">
+                        <span class="iconify" data-icon="lucide:save"></span>
+                        Simpan Perubahan
+                    </button>
+                </div>
             </form>
         </div>
     </div>
