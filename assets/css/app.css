@@ -145,10 +145,10 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 .stat-icon .iconify { width: 32px; height: 32px; }
-.stat-card.blue .stat-icon { color: var(--blue-500); }
-.stat-card.orange .stat-icon { color: var(--orange-500); }
-.stat-card.purple .stat-icon { color: var(--purple-500); }
-.stat-card.green .stat-icon { color: var(--green-500); }
+.stat-card.blue .stat-icon { color: #0284c7; } /* Darker blue */
+.stat-card.orange .stat-icon { color: #d97706; }
+.stat-card.purple .stat-icon { color: #7c3aed; }
+.stat-card.green .stat-icon { color: #059669; }
 
 /* ── Cards ── */
 .card {
