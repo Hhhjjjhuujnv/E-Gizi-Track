@@ -5,84 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - E-GiziTrack</title>
     <link rel="icon" type="image/png" href="/assets/images/logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{background:linear-gradient(135deg,#0f2b1d,#14532d,#166534);min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;color:#fff;padding:20px}
-        .login-wrapper{display:flex;width:100%;max-width:1100px;justify-content:space-between;align-items:center;gap:40px}
-        .stats-col{width:260px;flex-shrink:0}
-        .stats-col h2{font-size:22px;margin-bottom:6px}
-        .stats-col p{font-size:13px;opacity:.7;margin-bottom:24px;line-height:1.5}
-        .stat-pill{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);padding:16px 20px;border-radius:14px;margin-bottom:10px;text-align:center;transition:transform .2s}
-        .stat-pill:hover{transform:translateY(-2px)}
-        .stat-pill .num{font-size:28px;font-weight:700}
-        .stat-pill .lbl{font-size:12px;opacity:.75;margin-top:2px}
-        .login-card{background:#fff;color:#333;padding:36px;border-radius:20px;width:380px;flex-shrink:0;box-shadow:0 20px 50px rgba(0,0,0,.3);text-align:center}
-        .login-card img{width:48px;margin-bottom:8px}
-        .login-card h2{font-size:20px;color:#111;margin-bottom:2px}
-        .login-card .subtitle{font-size:12px;color:#888;margin-bottom:24px}
-        .field-label{text-align:left;font-size:12px;font-weight:600;margin-top:14px;color:#555}
-        .field-input{width:100%;padding:11px 14px;margin-top:5px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;transition:border .2s;box-sizing:border-box}
-        .field-input:focus{outline:none;border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.1)}
-        .role-toggle{display:flex;gap:8px;margin:18px 0}
-        .role-opt{flex:1;padding:10px;border-radius:10px;border:2px solid #e5e7eb;background:#f9fafb;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s;font-family:inherit;color:#555}
-        .role-opt:hover{border-color:#16a34a}
-        .role-opt.active{background:#14532d;color:#fff;border-color:#14532d}
-        .btn-login{width:100%;background:linear-gradient(135deg,#14532d,#166534);color:#fff;padding:12px;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit;transition:opacity .2s;margin-top:6px}
-        .btn-login:hover{opacity:.9}
-        .forgot{margin-top:14px;font-size:11px;color:#aaa}
-        .features-col{width:260px;flex-shrink:0}
-        .features-col h3{font-size:16px;margin-bottom:14px}
-        .feat-item{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);padding:12px 18px;border-radius:28px;margin-bottom:8px;font-size:13px;display:flex;align-items:center;gap:8px;transition:transform .2s}
-        .feat-item:hover{transform:translateX(4px)}
-        footer{position:fixed;bottom:14px;left:0;right:0;text-align:center;font-size:11px;opacity:.5}
-        @media(max-width:900px){.login-wrapper{flex-direction:column;align-items:center}.stats-col,.features-col{display:none}.login-card{width:100%;max-width:400px}}
+        body {
+            background-color: #14532d; /* Hijau solid sesuai contoh */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Left Column: Stats --- */
+        .stats-col {
+            flex: 1;
+            max-width: 300px;
+        }
+        .stats-col h2 { font-size: 28px; margin-bottom: 8px; }
+        .stats-col p { font-size: 14px; opacity: 0.8; margin-bottom: 24px; line-height: 1.4; }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 12px;
+            backdrop-filter: blur(5px);
+        }
+        .stat-box h3 { font-size: 24px; margin: 0; }
+        .stat-box span { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* --- Center Column: Login Card --- */
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            width: 400px;
+            color: #333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .login-card img { width: 48px; margin-bottom: 16px; }
+        .login-card h1 { font-size: 22px; margin: 0; color: #14532d; }
+        .login-card .subtitle { font-size: 12px; color: #666; margin: 4px 0 24px; }
+
+        .form-group { text-align: left; margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #444; }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-input:focus { border-color: #14532d; }
+
+        .role-selector {
+            display: flex;
+            background: #f3f4f6;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .role-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .role-btn.active { background: #1a5e37; color: white; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #1a5e37;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-submit:hover { opacity: 0.9; }
+        
+        .login-footer { font-size: 12px; color: #888; margin-top: 16px; }
+
+        /* --- Right Column: Features --- */
+        .features-col {
+            flex: 1;
+            max-width: 320px;
+        }
+        .features-col h3 { font-size: 18px; margin-bottom: 20px; }
+        
+        .feat-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 99px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
+        }
+        .feat-pill svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-col, .features-col { display: none; }
+            .login-container { justify-content: center; }
+        }
     </style>
 </head>
 <body>
-    <div class="login-wrapper">
+    <div class="login-container">
+        <!-- Left Column -->
         <div class="stats-col">
-            <h2>Selamat Datang 👋</h2>
-            <p>Sistem Pendataan Kesehatan Ibu Hamil dan Balita Wilayah Pontianak</p>
-            <div class="stat-pill"><div class="num"><%= totalData %></div><div class="lbl">Total Data Terkumpul</div></div>
-            <div class="stat-pill"><div class="num"><%= totalWilayah %></div><div class="lbl">Wilayah Tercakup</div></div>
-            <div class="stat-pill"><div class="num"><%= totalEnum %></div><div class="lbl">Enumerator Aktif</div></div>
+            <h2>Selamat Datang</h2>
+            <p>Sistem Pendataan Kesehatan Ibu Hamil dan Balita</p>
+            
+            <div class="stat-box">
+                <h3><%= typeof totalEntri !== 'undefined' ? totalEntri : '0' %></h3>
+                <span>Total Data Terkumpul</span>
+            </div>
+            <div class="stat-box">
+                <h3><%= typeof totalWilayah !== 'undefined' ? totalWilayah : '0' %></h3>
+                <span>Wilayah Tercakup</span>
+            </div>
+            <div class="stat-box">
+                <h3><%= typeof totalEnum !== 'undefined' ? totalEnum : '1' %></h3>
+                <span>Enumerator Aktif</span>
+            </div>
         </div>
+
+        <!-- Center Column -->
         <div class="login-card">
             <img src="/assets/images/logo.png" alt="Logo">
-            <h2>E-GiziTrack</h2>
-            <p class="subtitle">Sistem Pengumpulan Data Gizi Ibu Hamil dan Balita</p>
+            <h1>E-GiziTrack</h1>
+            <p class="subtitle">Sistem Pengumpulan Data Ibu Hamil & Balita</p>
+
             <form action="/login" method="POST">
-                <div class="field-label">Username</div>
-                <input type="text" name="username" class="field-input" placeholder="Masukkan username" required>
-                <div class="field-label">Password</div>
-                <input type="password" name="password" class="field-input" placeholder="••••••••" required>
-                <div class="field-label" style="margin-bottom:4px;">Masuk sebagai</div>
-                <div class="role-toggle">
-                    <input type="hidden" name="role" id="selected_role" value="enumerator">
-                    <button type="button" class="role-opt active" onclick="setRole('enumerator',this)">Enumerator</button>
-                    <button type="button" class="role-opt" onclick="setRole('admin',this)">Admin</button>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-input" placeholder="Masukkan username" required>
                 </div>
-                <button type="submit" class="btn-login">Masuk</button>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-input" placeholder="......" required>
+                </div>
+
+                <div style="text-align: left; margin-bottom: 6px;"><label style="font-size: 13px; font-weight: 600;">Masuk sebagai</label></div>
+                <div class="role-selector">
+                    <input type="hidden" name="role" id="roleInput" value="enumerator">
+                    <button type="button" class="role-btn active" onclick="selectRole('enumerator', this)">Enumerator</button>
+                    <button type="button" class="role-btn" onclick="selectRole('admin', this)">Admin</button>
+                </div>
+
+                <button type="submit" class="btn-submit">Masuk</button>
             </form>
-            <p class="forgot">Lupa password? Hubungi administrator sistem</p>
+
+            <div class="login-footer">
+                Lupa password? Hubungi administrator
+            </div>
         </div>
+
+        <!-- Right Column -->
         <div class="features-col">
             <h3>Fitur Utama</h3>
-            <div class="feat-item">Entry data Ibu Hamil & Balita</div>
-            <div class="feat-item">Dashboard & Statistik Real-time</div>
-            <div class="feat-item">Laporan Analitik & Grafik</div>
-            <div class="feat-item">Ekspor Data ke Excel</div>
-            <div class="feat-item">Role Admin & Enumerator</div>
+            
+            <div class="feat-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Form Multi-Step Ibu Hamil
+            </div>
+            <div class="feat-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Form Multi-Step Balita
+            </div>
+            <div class="feat-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Dashboard & Statistik
+            </div>
+            <div class="feat-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+                Ekspor Data (.xlsx)
+            </div>
         </div>
     </div>
-    <footer>© 2026 E-GiziTrack — Akses terbatas untuk petugas yang berwenang</footer>
+
+    <footer>
+        © 2026 Sistem Pengambilan Data Gizi - Akses terbatas untuk petugas yang berwenang
+    </footer>
+
     <script>
-    function setRole(role, btn) {
-        document.getElementById('selected_role').value = role;
-        document.querySelectorAll('.role-opt').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    }
+        function selectRole(role, btn) {
+            document.getElementById('roleInput').value = role;
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
     </script>
 </body>
 </html>

@@ -218,7 +218,26 @@ function requireAuth(req, res, next) {
 }
 
 // ── ROUTES ──
-app.get('/', (req, res) => (req.session && req.session.username) ? res.redirect('/dashboard') : res.redirect('/login'));
+app.get('/', async (req, res) => {
+    if (req.session.username) return res.redirect('/dashboard');
+    
+    // Fetch stats for login page
+    let totalEntri = 0;
+    let totalWilayah = 0;
+    let totalEnum = 4; // Default seed count
+
+    try {
+        const allData = await Responden.find();
+        totalEntri = allData.length;
+        totalWilayah = [...new Set(allData.map(d => d.wilayah_kecamatan))].length;
+        const users = await User.find();
+        if (users.length > 0) totalEnum = users.length;
+    } catch (e) {
+        console.log('Stats fetch error:', e);
+    }
+
+    res.render('login', { totalEntri, totalWilayah, totalEnum });
+});
 
 app.get('/login', async (req, res) => {
   if (req.session && req.session.username) return res.redirect('/dashboard');
